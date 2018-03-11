@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Best movies</string>
+    <string name="myMoviesKey">b19a8c83b2cf3a0f54989ccfb8d280a2</string>
+    <string name="popular">popular</string>
+    <string name="vote_average">top_rated</string>
+    <string name="pref_sorting">search_list</string>
+    <string name="action_settings">setting</string>
+    <string name="photo_recommend_size">w185</string>
+    <string name="bigger_photo">w342</string>
+    <string name="position">position</string>
+
+
+    <string name="poster_path_json_key">poster_path</string>
+    <string name="original_title_json_key">original_title</string>
+    <string name="overview_json_key">overview</string>
+    <string name="release_date_json_key">release_date</string>
+    <string name="vote_average_json_key">vote_average</string>
+
+
+    <string name="pref_title">Select search movies by </string>
+    <string-array name="pref_list_titles">
+        <item>Popularity</item>
+        <item>Top rated</item>
+
+    </string-array>
+    <string-array name="pref_list_values">
+        <item>popular</item>
+        <item>top_rated</item>
+
+    </string-array>
+</resources>
