@@ -53,15 +53,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         recyclerview = (RecyclerView) findViewById(R.id.recyclerview_main);
         listView     = (ListView)     findViewById(R.id.listView_main);
 
-        //https://www.youtube.com/watch?v=fBNpSRtfIUA
-        //https://api.themoviedb.org/3/movie/238/reviews?&api_key=b19a8c83b2cf3a0f54989ccfb8d280a2
-        // https://api.themoviedb.org/3/movie/238/videos?&api_key=b19a8c83b2cf3a0f54989ccfb8d280a2
-
-        //  http://image.tmdb.org/t/p/w185/deBjt3LT3UQHRXiNX1fu28lAtK6.jpg
-       // https://api.themoviedb.org/3/movie/top_rated?api_key=b19a8c83b2cf3a0f54989ccfb8d280a2
-        // https://api.themoviedb.org/3/movie/popular?api_key=b19a8c83b2cf3a0f54989ccfb8d280a2
-
-
         if(!isOnline() || getString(R.string.fav_key).equals(
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                         .getString(getString(R.string.pref_sorting),"-1"))){
