@@ -3,6 +3,7 @@ package com.abdelrahman.bestmovies;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -14,8 +15,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -30,30 +36,43 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String>,MyAdapter.ListItemClickListener {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String>,MoviesAdapter.ListItemClickListener {
 
     private String searchBy;
     private static final int DOWNLOAD_ID =2;
+    public static final String PREE_ID = "PREE_ID";
     private RecyclerView recyclerview;
     public static List<String> moviesList;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerview= (RecyclerView) findViewById(R.id.recyclerview_main);
+        recyclerview = (RecyclerView) findViewById(R.id.recyclerview_main);
+        listView     = (ListView)     findViewById(R.id.listView_main);
 
+        //https://www.youtube.com/watch?v=fBNpSRtfIUA
+        //https://api.themoviedb.org/3/movie/238/reviews?&api_key=b19a8c83b2cf3a0f54989ccfb8d280a2
+        // https://api.themoviedb.org/3/movie/238/videos?&api_key=b19a8c83b2cf3a0f54989ccfb8d280a2
 
         //  http://image.tmdb.org/t/p/w185/deBjt3LT3UQHRXiNX1fu28lAtK6.jpg
        // https://api.themoviedb.org/3/movie/top_rated?api_key=b19a8c83b2cf3a0f54989ccfb8d280a2
         // https://api.themoviedb.org/3/movie/popular?api_key=b19a8c83b2cf3a0f54989ccfb8d280a2
 
-        String myUrl = buildURL();
-        Toast.makeText(this, myUrl, Toast.LENGTH_LONG).show();
 
+        if(!isOnline() || getString(R.string.fav_key).equals(
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                        .getString(getString(R.string.pref_sorting),"-1"))){
+            recyclerview.setVisibility(View.GONE);
+            populatFav();
+        }
 
-        if(isOnline()) {
+        else {
+            listView.setVisibility(View.GONE);
+            String myUrl = buildURL();
+            Toast.makeText(this, myUrl, Toast.LENGTH_LONG).show();
             Bundle bundle = new Bundle();
             bundle.putString("URL", myUrl);
             LoaderManager loaderManager = getSupportLoaderManager();
@@ -63,11 +82,49 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             } else {
                 loaderManager.restartLoader(DOWNLOAD_ID, bundle, this);
             }
-        }else{
-            Toast.makeText(this, "you aren't online", Toast.LENGTH_SHORT).show();
         }
 
     }
+
+    private void populatFav() {
+        final List<String> moviesTitles = geyMoviesFromDatabase();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,moviesTitles);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(MainActivity.this, "the button is clicked", Toast.LENGTH_SHORT).show();
+                Intent ii = new Intent(MainActivity.this, DetailsActivity.class);
+                ii.putExtra(PREE_ID,moviesTitles.get(i));
+                ii.putExtra(getString(R.string.position),DetailsActivity.DEFAULT_POSITION);
+                startActivity(ii);
+            }
+        });
+    }
+
+    private List<String> geyMoviesFromDatabase() {
+        List<String> moviesTitles = new ArrayList<>();
+        Uri uri = MoviesContract.MoviesEntry.CONTENT_URI;
+
+        String[] projection = new String[]{MoviesContract.MoviesEntry.COLUMN_MOVIE_NAME,};
+        String selection = null;
+        String[] selectionArgs = null;
+        String sortOrder = null;
+
+        Cursor cursor = getContentResolver().query(uri, projection, selection, selectionArgs,
+                sortOrder);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            for (int i = cursor.getCount(); i > 0; i--) {
+                moviesTitles.add(cursor.getString(cursor.getColumnIndex(MoviesContract.MoviesEntry.COLUMN_MOVIE_NAME)));
+                cursor.moveToNext();
+            }
+
+        }
+        return moviesTitles;
+    }
+
     public boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -117,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     return resultJson;
                 }
                 catch (IOException e){
-                    Toast.makeText(MainActivity.this, "Error while loading", Toast.LENGTH_SHORT).show();
+                    Log.i("error try and catch", "Error while loading");
                     return null;
                 }
             }
@@ -151,9 +208,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
 
             recyclerview.setLayoutManager(new GridLayoutManager(this,2));
-            MyAdapter myAdapter = new MyAdapter(this,this);
+            MoviesAdapter moviesAdapter = new MoviesAdapter(this,this);
             recyclerview.setHasFixedSize(true);
-            recyclerview.setAdapter(myAdapter);
+            recyclerview.setAdapter(moviesAdapter);
 
             Toast.makeText(this, moviesList.size()+"", Toast.LENGTH_SHORT).show();
         }else{
@@ -196,6 +253,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Toast.makeText(this, "the button is clicked", Toast.LENGTH_SHORT).show();
         Intent i = new Intent(this, DetailsActivity.class);
         i.putExtra(getString(R.string.position),clickedItemIndex);
+        Log.i("Details IDID ", String.valueOf(clickedItemIndex));
+        i.putExtra(PREE_ID,"");
         startActivity(i);
     }
 

@@ -26,10 +26,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".DetailsActivity"
+        <activity
+            android:name=".DetailsActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity">
 
         </activity>
+        <provider
+            android:name=".MoviesProvider"
+            android:authorities="com.abdelrahman.bestmovies"
+            android:exported="false" />
     </application>
 
 </manifest>

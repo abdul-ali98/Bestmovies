@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -14,13 +13,13 @@ import com.squareup.picasso.Picasso;
  * Created by abdalrahman on 3/5/2018.
  */
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.NumberViewHolder> {
+public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.NumberViewHolder> {
 
 
     private final ListItemClickListener mOnClickListener;
     private final Context context;
 
-    public MyAdapter(ListItemClickListener listener,Context c) {
+    public MoviesAdapter(ListItemClickListener listener, Context c) {
         this.mOnClickListener = listener;
         this.context= c;
     }

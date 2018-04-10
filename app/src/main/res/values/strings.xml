@@ -8,7 +8,7 @@
     <string name="photo_recommend_size">w185</string>
     <string name="bigger_photo">w342</string>
     <string name="position">position</string>
-
+    <string name="fav_key">fav_movies</string>
 
     <string name="poster_path_json_key">poster_path</string>
     <string name="original_title_json_key">original_title</string>
@@ -21,11 +21,11 @@
     <string-array name="pref_list_titles">
         <item>Popularity</item>
         <item>Top rated</item>
-
+        <item>Favorites</item>
     </string-array>
     <string-array name="pref_list_values">
         <item>popular</item>
         <item>top_rated</item>
-
+        <item>fav_movies</item>
     </string-array>
 </resources>

@@ -10,6 +10,19 @@ public class Movie {
     private String overview; //overview
     private String relaseDate; //release_date
     private String userRate; //vote_average
+    private int movieID;
+    private int databaseID;
+
+    public int getDatabaseID() {
+        return databaseID;
+    }
+
+    public void setDatabaseID(int databaseID) {this.databaseID = databaseID;}
+
+
+    public int getMovieID() {return movieID;}
+
+    public void setMovieID(int movieID) {this.movieID = movieID;}
 
     public String getPhotoPath() {
         return photoPath;

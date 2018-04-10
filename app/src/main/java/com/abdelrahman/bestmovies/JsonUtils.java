@@ -14,6 +14,8 @@ public class JsonUtils {
     private static final String OVERVIEW = "overview";
     private static final String RELEASE_DATE ="release_date";
     private static final String VOTE_AVERAGE ="vote_average";
+    private static final String MOVIE_ID = "id";
+
     public static Movie parseMovieJson(String json){
 
         Movie movie = new Movie();
@@ -21,10 +23,11 @@ public class JsonUtils {
 
             JSONObject jsonObject = new JSONObject(json);
             movie.setOverview(jsonObject.getString(OVERVIEW));
-            movie.setPhotoPath("http://image.tmdb.org/t/p/w342"+jsonObject.getString(POSTER_PATH));
+            movie.setPhotoPath("http://image.tmdb.org/t/p/w185"+jsonObject.getString(POSTER_PATH));
             movie.setRelaseDate(jsonObject.getString(RELEASE_DATE));
             movie.setTitle(jsonObject.getString(ORIGINAL_TITLE));
             movie.setUserRate(jsonObject.getString(VOTE_AVERAGE));
+            movie.setMovieID(Integer.parseInt(jsonObject.getString(MOVIE_ID)));
 
         } catch (JSONException e) {
             e.printStackTrace();
