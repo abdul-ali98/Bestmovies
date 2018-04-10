@@ -170,7 +170,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             Bundle bundle = new Bundle();
             bundle.putString("URL", "https://api.themoviedb.org/3/movie/"
                     + movie.getMovieID()+
-                    "/reviews?&api_key=b19a8c83b2cf3a0f54989ccfb8d280a2");
+                    "/reviews?&api_key=myKey");
             LoaderManager loaderManager = getSupportLoaderManager();
             Loader<String> moviesSearchLoader = loaderManager.getLoader(DOWNLOAD_ID);
             if (moviesSearchLoader == null) {
@@ -463,7 +463,7 @@ public class DetailsActivity extends AppCompatActivity implements LoaderManager.
             Bundle bundle = new Bundle();
             bundle.putString("URL", "https://api.themoviedb.org/3/movie/"
                     + movie.getMovieID()+
-                    "/videos?&api_key=b19a8c83b2cf3a0f54989ccfb8d280a2");
+                    "/videos?&api_key=myKey");
             LoaderManager loaderManager = getSupportLoaderManager();
             Loader<String> moviesSearchLoader = loaderManager.getLoader(DOWNLOAD_ID_TRAILS);
             if (moviesSearchLoader == null) {
