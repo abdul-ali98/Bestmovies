@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Best movies</string>
-    <string name="myMoviesKey">b19a8c83b2cf3a0f54989ccfb8d280a2</string>
+    <string name="myMoviesKey">myKey</string>
     <string name="popular">popular</string>
     <string name="vote_average">top_rated</string>
     <string name="pref_sorting">search_list</string>
