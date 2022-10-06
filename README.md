@@ -1,3 +1,3 @@
 # best-movies-stage1
 
-This application will crash unless you add your personel API key in Strings.xml (myMoviesKey).
+You must add your personel API key in Strings.xml (myMoviesKey).
